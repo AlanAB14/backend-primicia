@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS contactos (
     motivo VARCHAR(60) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(80) NOT NULL,
-    mensaje VARCHAR(250) NOT NULL,
+    mensaje VARCHAR(250) NOT NULL
 );
 DESCRIBE contacto;
 
@@ -76,14 +76,6 @@ CREATE TABLE IF NOT EXISTS promociones (
 );
 DESCRIBE promociones;
 
-CREATE TABLE IF NOT EXISTS promociones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    fechaInicio DATE NOT NULL,
-    fechaFin DATE NOT NULL,
-    titulo TEXT NOT NULL,
-    texto TEXT NULL
-);
-DESCRIBE promociones;
 
 CREATE TABLE IF NOT EXISTS comercios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -109,8 +101,8 @@ INSERT INTO preguntas VALUES
     (6, '¿Puedo bloquear mi tarjeta virtual de Primicia?', 'Ejemplo de respuesta'),
 
 INSERT INTO tasas VALUES
-    (1, 'TASA DE INTERES – FINANCIACION', 'Comienza a aplicarse en la fecha de vencimiento del resumen, en el caso que deba financiar saldo.', 128.20, 10.54, 238.32 )
-    (2, 'TASA DE INTERES – PUNITORIOS', 'Comienza a aplicarse en la fecha de vencimiento del resumen, en el caso de no haber abonado el pago mínimo.', 64.10, 5.27, 119.16 )
+    (1, 'TASA DE INTERES – FINANCIACION', 'Comienza a aplicarse en la fecha de vencimiento del resumen, en el caso que deba financiar saldo.', 128.20, 10.54, 238.32 ),
+    (2, 'TASA DE INTERES – PUNITORIOS', 'Comienza a aplicarse en la fecha de vencimiento del resumen, en el caso de no haber abonado el pago mínimo.', 64.10, 5.27, 119.16 ),
     (3, 'TASA DE INTERES – ADELANTOS EN EFECTIVO', 'Comienza a aplicarse desde la fecha en la que se realiza el adelanto en efectivo', 128.20, 10.54, 238.32 )
 
 
@@ -132,6 +124,17 @@ INSERT INTO filiales VALUES
 
 INSERT INTO promociones VALUES
     (1, '2023-11-10', '2023-11-30', 'Jueves y Viernes  3 cuotas + 15%', 'JUEVES Y VIERNES 3 CUOTAS + 15% DESCUENTO. Fecha de Inicio: 01/01/2023. Fecha de Finalización: 30/09/2023.' )
+
+INSERT INTO categoria_comercio VALUES
+    (1, 'Agencias de turismo' ),
+    (2, 'Accesorios y repuestos' ),
+    (3, 'Alineación y Balanceo' ),
+    (4, 'Artículos para el Hogar' ),
+    (5, 'Artículos de vestir bebes - niños' ),
+    (6, 'Artículos para deportes' )
+
+INSERT INTO comercios VALUES
+    (1, 1, 'Olivera Viajes', 'Catamarca 72', 2, 1 )
 
 
 

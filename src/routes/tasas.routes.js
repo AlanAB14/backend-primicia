@@ -1,17 +1,15 @@
-import { Router } from 'express'
-import { verificarToken } from '../middleware/verificarToken.js'
-import { createTasa, deleteTasa, getTasas, updateTasa } from '../controllers/tasas.controller.js'
+const { Router } = require('express');
+const { verificarToken } = require('../middleware/verificarToken.js');
+const { createTasa, deleteTasa, getTasas, updateTasa } = require('../controllers/tasas.controller.js');
 
+const router = Router();
 
-const router = Router()
+router.get('/tasas', getTasas);
 
-router.get('/tasas', getTasas)
+router.post('/tasas', verificarToken, createTasa);
 
-router.post('/tasas', verificarToken, createTasa)
+router.patch('/tasas/:id', verificarToken, updateTasa);
 
-router.patch('/tasas/:id', verificarToken, updateTasa)
+router.delete('/tasas/:id', verificarToken, deleteTasa);
 
-router.delete('/tasas/:id', verificarToken, deleteTasa)
-
-
-export default router;
+module.exports = router;

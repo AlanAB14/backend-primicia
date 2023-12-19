@@ -1,12 +1,19 @@
-import { config } from 'dotenv'
+const dotenv = require('dotenv');
+dotenv.config();
 
-config()
+// Exportar variables
+module.exports.PORT = 3000;
+module.exports.DB_USER = 'root';
+module.exports.DB_PASSWORD = '';
+module.exports.DB_HOST = 'localhost';
+module.exports.DB_DATABASE = 'primicia';
+module.exports.DB_PORT = 3306;
 
-export const PORT = process.env.PORT || 3000
-export const DB_USER = process.env.DB_USER || 'root'
-export const DB_PASSWORD = process.env.DB_PASSWORD || ''
-export const DB_HOST = process.env.DB_HOST || 'localhost'
-export const DB_DATABASE = process.env.DB_DATABASE || 'primicia'
-export const DB_PORT = process.env.DB_PORT || 3306
+// module.exports.PORT = 3001;
+// module.exports.DB_USER =  'root';
+// module.exports.DB_PASSWORD =  '';
+// module.exports.DB_HOST =  'localhost';
+// module.exports.DB_DATABASE =  'owpkpamc_mutual';
+// module.exports.DB_PORT =  3001;
 
-export const SECRET_KET = 'TokenPrimicia'
+module.exports.SECRET_KEY = 'TokePrimicia';

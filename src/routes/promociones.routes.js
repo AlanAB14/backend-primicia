@@ -1,19 +1,23 @@
-import { Router } from 'express'
-import { verificarToken } from '../middleware/verificarToken.js'
-import { createPromocion, deletePromocion, getPromocion, getPromociones, updatePromocion } from '../controllers/promociones.controller.js'
+const { Router } = require('express');
+const { verificarToken } = require('../middleware/verificarToken.js');
+const {
+  createPromocion,
+  deletePromocion,
+  getPromocion,
+  getPromociones,
+  updatePromocion,
+} = require('../controllers/promociones.controller.js');
 
+const router = Router();
 
-const router = Router()
+router.get('/promociones', getPromociones);
 
-router.get('/promociones', getPromociones)
+router.get('/promociones/:id', getPromocion);
 
-router.get('/promociones/:id', getPromocion)
+router.post('/promociones', verificarToken, createPromocion);
 
-router.post('/promociones', verificarToken, createPromocion)
+router.patch('/promociones/:id', verificarToken, updatePromocion);
 
-router.patch('/promociones/:id', verificarToken, updatePromocion)
+router.delete('/promociones/:id', verificarToken, deletePromocion);
 
-router.delete('/promociones/:id', verificarToken, deletePromocion)
-
-
-export default router;
+module.exports = router;
