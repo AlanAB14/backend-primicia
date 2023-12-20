@@ -9,6 +9,7 @@ const {
   getComerciosPorFilial,
   getComerciosPorPromocion,
   updateComercio,
+  getComerciosPorCategoriaYFilial,
 } = require('../controllers/comercios.controller.js');
 
 const router = Router();
@@ -20,6 +21,8 @@ router.get('/comercios/:id', getComercio);
 router.get('/comerciosPorFilial/:id', getComerciosPorFilial);
 
 router.get('/comerciosPorCategoria/:id', getComerciosPorCategoria);
+
+router.post('/comerciosPorCategoriaYFilial', getComerciosPorCategoriaYFilial);
 
 router.get('/comerciosPorPromocion/:id', getComerciosPorPromocion);
 

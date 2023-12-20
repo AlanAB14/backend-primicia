@@ -71,7 +71,8 @@ CREATE TABLE IF NOT EXISTS promociones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     fechaInicio DATE NOT NULL,
     fechaFin DATE NOT NULL,
-    titulo TEXT NOT NULL,
+    diasPromocion TEXT NOT NULL,
+    promocion TEXT NOT NULL,
     texto TEXT NULL
 );
 DESCRIBE promociones;
@@ -83,7 +84,7 @@ CREATE TABLE IF NOT EXISTS comercios (
     nombre VARCHAR(120) NOT NULL,
     direccion VARCHAR(140) NOT NULL,
     filialId INT NOT NULL,
-    promocionId INT,
+    promocionId INT NULL,
     FOREIGN KEY (categoriaId) REFERENCES categoria_comercio(id),
     FOREIGN KEY (filialId) REFERENCES filiales(id),
     FOREIGN KEY (promocionId) REFERENCES promociones(id)
@@ -123,7 +124,7 @@ INSERT INTO filiales VALUES
     (14, 'Carmen', 'Sarmiento 420', 'carmen@tarjetaprimicia.com.ar', '')
 
 INSERT INTO promociones VALUES
-    (1, '2023-11-10', '2023-11-30', 'Jueves y Viernes  3 cuotas + 15%', 'JUEVES Y VIERNES 3 CUOTAS + 15% DESCUENTO. Fecha de Inicio: 01/01/2023. Fecha de Finalización: 30/09/2023.' )
+    (1, '2023-11-10', '2023-11-30', 'Jueves y Viernes',  '3 cuotas + 15%', 'JUEVES Y VIERNES 3 CUOTAS + 15% DESCUENTO. Fecha de Inicio: 01/01/2023. Fecha de Finalización: 30/09/2023.' )
 
 INSERT INTO categoria_comercio VALUES
     (1, 'Agencias de turismo' ),
