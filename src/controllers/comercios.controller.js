@@ -61,8 +61,7 @@ exports.getComerciosPorCategoriaYFilial = async (req, res) => {
     
     try {
         const [rows] = await pool.query('SELECT * FROM comercios WHERE comercioId = ? AND filialId = ?', [comercioId, filialId]);
-        console.log(rows)
-        
+
         if (rows.length <= 0) return res.status(202).json(null);
         res.json(rows);
     } catch (error) {
