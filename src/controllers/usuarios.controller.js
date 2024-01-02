@@ -1,7 +1,7 @@
 const { pool } = require('../db.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { SECRET_KET } = require('../config.js');
+const { SECRET_KEY } = require('../config.js');
 
 exports.getUsuarios = async (req, res) => {
     try {
@@ -65,7 +65,7 @@ exports.loginUsuario = async (req, res) => {
                 super_admin: rowsUser[0].super_admin,
                 id: rowsUser[0].id
             };
-            const token = jwt.sign({ newUser }, SECRET_KET, { expiresIn: '24h' });
+            const token = jwt.sign({ newUser }, SECRET_KEY, { expiresIn: '24h' });
             res.status(200).json({ mensaje: 'Inicio de sesión exitoso', token });
         } else {
             return res.status(400).json({

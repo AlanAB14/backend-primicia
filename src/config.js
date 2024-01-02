@@ -16,4 +16,4 @@ module.exports.DB_PORT = 3306;
 // module.exports.DB_DATABASE =  'owpkpamc_mutual';
 // module.exports.DB_PORT =  3001;
 
-module.exports.SECRET_KEY = 'TokePrimicia';
+module.exports.SECRET_KEY = 'TokenPrimicia';
