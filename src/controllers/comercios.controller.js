@@ -57,10 +57,10 @@ exports.getComerciosPorCategoria = async (req, res) => {
 };
 
 exports.getComerciosPorCategoriaYFilial = async (req, res) => {
-    const { comercioId, filialId } = req.body;
+    const { categoriaId, filialId } = req.body;
     
     try {
-        const [rows] = await pool.query('SELECT * FROM comercios WHERE comercioId = ? AND filialId = ?', [comercioId, filialId]);
+        const [rows] = await pool.query('SELECT * FROM comercios WHERE categoriaId = ? AND filialId = ?', [categoriaId, filialId]);
         console.log(rows)
         
         if (rows.length <= 0) return res.status(202).json(null);
