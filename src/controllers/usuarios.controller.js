@@ -25,7 +25,7 @@ exports.registerUsuario = async (req, res) => {
             const hashPass = bcrypt.hashSync(password, 10);
             const [rows] = await pool.query('INSERT INTO usuarios (user ,password, super_admin) VALUES (?, ?, ?)', [user, hashPass, super_admin]);
             if (rows.insertId) {
-                const token = jwt.sign({ user, super_admin }, SECRET_KET, { expiresIn: '24h' });
+                const token = jwt.sign({ user, super_admin }, SECRET_KEY, { expiresIn: '24h' });
                 res.status(200).send({
                     id: rows.insertId,
                     token

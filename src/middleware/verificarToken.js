@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { SECRET_KET } = require('../config.js');
+const { SECRET_KEY } = require('../config.js');
 
 // Función de middleware para verificar el token
 function verificarToken(req, res, next) {
@@ -10,7 +10,7 @@ function verificarToken(req, res, next) {
 
     try {
         const tokenValue = req.headers.authorization.split(' ')[1];
-        const usuarioVerificado = jwt.verify(tokenValue, SECRET_KET);
+        const usuarioVerificado = jwt.verify(tokenValue, SECRET_KEY);
         req.usuario = usuarioVerificado;
         next();
     } catch (error) {
