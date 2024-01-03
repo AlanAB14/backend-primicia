@@ -18,6 +18,6 @@ router.post('/filiales', verificarToken, createFilial);
 
 router.patch('/filiales/:id', verificarToken, updateFilial);
 
-router.delete('/filiales/:id', deleteFilial);
+router.delete('/filiales/:id', verificarToken, deleteFilial);
 
 module.exports = router;

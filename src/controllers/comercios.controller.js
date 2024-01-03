@@ -44,7 +44,7 @@ exports.getComerciosPorFilial = async (req, res) => {
 
 exports.getComerciosPorCategoria = async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM comercios WHERE comercioId = ?', [req.params.id]);
+        const [rows] = await pool.query('SELECT * FROM comercios WHERE categoriaId = ?', [req.params.id]);
         if (rows.length <= 0) return res.status(404).json({
             message: 'Comercios not found'
         });
@@ -61,7 +61,6 @@ exports.getComerciosPorCategoriaYFilial = async (req, res) => {
     
     try {
         const [rows] = await pool.query('SELECT * FROM comercios WHERE categoriaId = ? AND filialId = ?', [categoriaId, filialId]);
-        console.log(rows)
         
         if (rows.length <= 0) return res.status(202).json(null);
         res.json(rows);
@@ -88,13 +87,14 @@ exports.getComerciosPorPromocion = async (req, res) => {
 };
 
 exports.createComercio = async (req, res) => {
-    const { comercioId, nombre, direccion, filialId, promocionId } = req.body;
+    const { categoriaId, nombre, direccion, filialId, promocionId } = req.body;
     try {
-        const [rows] = await pool.query('INSERT INTO comercios ( comercioId, nombre, direccion, filialId, promocionId ) VALUES (?, ?, ?, ?, ?)', [comercioId, nombre, direccion, filialId, promocionId]);
+        const [rows] = await pool.query('INSERT INTO comercios ( categoriaId, nombre, direccion, filialId, promocionId ) VALUES (?, ?, ?, ?, ?)', [categoriaId, nombre, direccion, filialId, promocionId]);
         res.send({
             id: rows.insertId,
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             message: 'Something goes wrong'
         });
@@ -118,9 +118,9 @@ exports.deleteComercio = async (req, res) => {
 
 exports.updateComercio = async (req, res) => {
     const { id } = req.params;
-    const { comercioId, nombre, direccion, filialId, promocionId } = req.body;
+    const { categoriaId, nombre, direccion, filialId, promocionId } = req.body;
     try {
-        const result = await pool.query('UPDATE comercios set comercioId = IFNULL(?, comercioId), nombre = IFNULL(?, nombre), direccion = IFNULL(?, direccion), filialId = IFNULL(?, filialId), promocionId = IFNULL(?, promocionId)  WHERE id = ?', [comercioId, nombre, direccion, filialId, promocionId, id]);
+        const result = await pool.query('UPDATE comercios set categoriaId = IFNULL(?, categoriaId), nombre = IFNULL(?, nombre), direccion = IFNULL(?, direccion), filialId = IFNULL(?, filialId), promocionId = IFNULL(?, promocionId)  WHERE id = ?', [categoriaId, nombre, direccion, filialId, promocionId, id]);
         if (result.affectedRows === 0) return res.status(404).json({
             message: 'Comercio not found'
         });
