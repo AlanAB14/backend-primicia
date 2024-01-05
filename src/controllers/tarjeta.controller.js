@@ -30,12 +30,14 @@ exports.getTarjeta = async (req, res) => {
 
 exports.createTarjeta = async (req, res) => {
     const { nombre, email, telefono, domicilio, ciudad, dni, ingresos, filial, mensaje } = req.body;
+    const date = new Date();
     try {
-        const [rows] = await pool.query('INSERT INTO tarjeta ( nombre, email, telefono, domicilio, ciudad, dni, ingresos, filial, mensaje ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [nombre, email, telefono, domicilio, ciudad, dni, ingresos, filial, mensaje]);
+        const [rows] = await pool.query('INSERT INTO tarjeta ( nombre, email, telefono, domicilio, ciudad, dni, ingresos, filial, mensaje, fecha ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [nombre, email, telefono, domicilio, ciudad, dni, ingresos, filial, mensaje, date]);
         res.send({
             id: rows.insertId,
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             message: 'Something goes wrong'
         });

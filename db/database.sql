@@ -38,7 +38,8 @@ CREATE TABLE IF NOT EXISTS tarjeta (
     dni VARCHAR(60) NOT NULL,
     ingresos VARCHAR(60) NOT NULL,
     filial VARCHAR(70) NOT NULL,
-    mensaje VARCHAR(250) NOT NULL
+    mensaje VARCHAR(250) NOT NULL,
+    fecha DATE NOT NULL
 );
 DESCRIBE tarjeta;
 
@@ -84,7 +85,7 @@ CREATE TABLE IF NOT EXISTS comercios (
     nombre VARCHAR(120) NOT NULL,
     direccion VARCHAR(140) NOT NULL,
     filialId INT NOT NULL,
-    promocionId INT NULL,
+    promocionId INT NOT NULL,
     FOREIGN KEY (categoriaId) REFERENCES categoria_comercio(id),
     FOREIGN KEY (filialId) REFERENCES filiales(id),
     FOREIGN KEY (promocionId) REFERENCES promociones(id)

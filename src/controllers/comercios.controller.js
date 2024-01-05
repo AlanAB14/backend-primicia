@@ -119,16 +119,52 @@ exports.deleteComercio = async (req, res) => {
 exports.updateComercio = async (req, res) => {
     const { id } = req.params;
     const { categoriaId, nombre, direccion, filialId, promocionId } = req.body;
+    
     try {
-        const result = await pool.query('UPDATE comercios set categoriaId = IFNULL(?, categoriaId), nombre = IFNULL(?, nombre), direccion = IFNULL(?, direccion), filialId = IFNULL(?, filialId), promocionId = IFNULL(?, promocionId)  WHERE id = ?', [categoriaId, nombre, direccion, filialId, promocionId, id]);
-        if (result.affectedRows === 0) return res.status(404).json({
-            message: 'Comercio not found'
-        });
+        let query;
+        let values;
+
+        if (promocionId === 0) {
+            // Si promocionId es 0, elimina el campo promocionId de la base de datos
+            query = `
+                UPDATE comercios
+                SET
+                    categoriaId = IFNULL(?, categoriaId),
+                    nombre = IFNULL(?, nombre),
+                    direccion = IFNULL(?, direccion),
+                    filialId = IFNULL(?, filialId),
+                    promocionId = NULL
+                WHERE id = ?
+            `;
+            values = [categoriaId, nombre, direccion, filialId, id];
+        } else {
+            // Si promocionId no es 0, actualiza normalmente
+            query = `
+                UPDATE comercios
+                SET
+                    categoriaId = IFNULL(?, categoriaId),
+                    nombre = IFNULL(?, nombre),
+                    direccion = IFNULL(?, direccion),
+                    filialId = IFNULL(?, filialId),
+                    promocionId = IFNULL(?, promocionId)
+                WHERE id = ?
+            `;
+            values = [categoriaId, nombre, direccion, filialId, promocionId, id];
+        }
+
+        const result = await pool.query(query, values);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                message: 'Comercio not found'
+            });
+        }
 
         const [rows] = await pool.query('SELECT * FROM comercios WHERE id = ?', [id]);
 
         res.send(rows[0]);
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             message: 'Something goes wrong'
         });
