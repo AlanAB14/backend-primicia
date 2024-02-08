@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS contactos (
     motivo VARCHAR(60) NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     email VARCHAR(80) NOT NULL,
-    mensaje VARCHAR(250) NOT NULL
+    mensaje VARCHAR(250) NOT NULL,
+    fecha DATE NOT NULL
 );
 DESCRIBE contacto;
 

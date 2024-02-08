@@ -30,8 +30,9 @@ exports.getContacto = async (req, res) => {
 
 exports.createContacto = async (req, res) => {
     const { motivo, nombre, email, mensaje } = req.body;
+    const date = new Date();
     try {
-        const [rows] = await pool.query('INSERT INTO contactos ( motivo, nombre, email, mensaje ) VALUES (?, ?, ?, ?)', [motivo, nombre, email, mensaje]);
+        const [rows] = await pool.query('INSERT INTO contactos ( motivo, nombre, email, mensaje, fecha ) VALUES (?, ?, ?, ?, ?)', [motivo, nombre, email, mensaje, date]);
         res.send({
             id: rows.insertId,
         });
