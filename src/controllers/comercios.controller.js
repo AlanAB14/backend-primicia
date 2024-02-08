@@ -30,7 +30,7 @@ exports.getComercio = async (req, res) => {
 
 exports.getComerciosPorFilial = async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM comercios WHERE filialId = ?', [req.params.id]);
+        const [rows] = await pool.query('SELECT c.*, cc.categoria FROM comercios c INNER JOIN categoria_comercio cc ON c.categoriaId = cc.id WHERE c.filialId = ?', [req.params.id]);
         if (rows.length <= 0) return res.status(404).json({
             message: 'Comercios not found'
         });
