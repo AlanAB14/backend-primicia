@@ -2,7 +2,7 @@ const { pool } = require('./../db.js');
 
 exports.getCategorias = async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT * FROM categoria_comercio');
+        const [rows] = await pool.query('SELECT * FROM categoria_comercio ORDER BY categoria ASC');
         if (rows.length <= 0) return res.status(404).json({
             message: 'Categorias not found'
         });

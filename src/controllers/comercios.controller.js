@@ -28,6 +28,51 @@ exports.getComercio = async (req, res) => {
     }
 };
 
+exports.getComerciosPorFilialCategoriaPromocion = async (req, res) => {
+    const { localidad, categoria, promocion } = req.body;
+    console.log(localidad)
+    try {
+        let sqlQuery = 'SELECT * FROM comercios';
+        const sqlParams = [];
+
+        if (localidad && localidad.length > 0) {
+            if (localidad.length === 1) {
+                sqlQuery += ' WHERE filialId = ?';
+                sqlParams.push(localidad[0]);
+            } else {
+                const placeholders = localidad.map(() => '?').join(',');
+                sqlQuery += ' WHERE filialId IN (' + placeholders + ')';
+                sqlParams.push(...localidad);
+            }
+        }
+
+        if (categoria && categoria !== '' && categoria !== 'Todas') {
+            sqlQuery += sqlQuery.includes('WHERE') ? ' AND categoriaId = ?' : ' WHERE categoriaId = ?';
+            sqlParams.push(categoria);
+        }
+
+        if (promocion && promocion !== '' && promocion !== 'Todas' && promocion !== 'no') {
+            sqlQuery += sqlQuery.includes('WHERE') ? ' AND promocionId = ?' : ' WHERE promocionId = ?';
+            sqlParams.push(promocion);
+        } else if (promocion === 'no') {
+            sqlQuery += sqlQuery.includes('WHERE') ? ' AND promocionId IS NULL' : ' WHERE promocionId IS NULL';
+        }
+
+        const [rows] = await pool.query(sqlQuery, sqlParams);
+
+        if (rows.length <= 0) {
+            return res.json([]);
+        }
+
+        res.json(rows);
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Something goes wrong'
+        });
+    }
+};
+
+
 exports.getComerciosPorFilial = async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT c.*, cc.categoria FROM comercios c INNER JOIN categoria_comercio cc ON c.categoriaId = cc.id WHERE c.filialId = ?', [req.params.id]);

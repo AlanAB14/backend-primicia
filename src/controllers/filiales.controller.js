@@ -29,9 +29,9 @@ exports.getFilial = async (req, res) => {
 };
 
 exports.createFilial = async (req, res) => {
-    const { localidad, direccion, email, telefono } = req.body;
+    const { localidad, direccion, email, telefono, receptoria } = req.body;
     try {
-        const [rows] = await pool.query('INSERT INTO filiales ( localidad, direccion, email, telefono ) VALUES (?, ?, ?, ?)', [localidad, direccion, email, telefono]);
+        const [rows] = await pool.query('INSERT INTO filiales ( localidad, direccion, email, telefono, receptoria ) VALUES (?, ?, ?, ?, ?)', [localidad, direccion, email, telefono, receptoria]);
         res.send({
             id: rows.insertId,
         });
@@ -59,9 +59,9 @@ exports.deleteFilial = async (req, res) => {
 
 exports.updateFilial = async (req, res) => {
     const { id } = req.params;
-    const { localidad, direccion, email, telefono } = req.body;
+    const { localidad, direccion, email, telefono, receptoria } = req.body;
     try {
-        const result = await pool.query('UPDATE filiales set localidad = IFNULL(?, localidad), direccion = IFNULL(?, direccion), email = IFNULL(?, email), telefono = IFNULL(?, telefono)  WHERE id = ?', [localidad, direccion, email, telefono, id]);
+        const result = await pool.query('UPDATE filiales set localidad = IFNULL(?, localidad), direccion = IFNULL(?, direccion), email = IFNULL(?, email), telefono = IFNULL(?, telefono), receptoria = IFNULL(?, receptoria) WHERE id = ?', [localidad, direccion, email, telefono, receptoria, id]);
         if (result.affectedRows === 0) return res.status(404).json({
             message: 'Filial not found'
         });
