@@ -1,33 +1,30 @@
 const nodemailer = require('nodemailer');
 
-// Configurar el transportador
-const transporter = nodemailer.createTransport({
-    host: 'mail.tarjetaprimicia.com.ar',
-    port: 9025,
-    secure: false,
-    auth: {
-        user: 'transporter@tarjetaprimicia.com.ar',
-        pass: 's-csu0;$E~0f'
-    }
-});
 
-// Función para enviar el correo electrónico
-const enviarCorreo = async (destinatario, asunto, cuerpo) => {
-    try {
-        // Configurar el correo electrónico
-        const mailOptions = {
-            from: 'transporter@mutualentreasoc.com.ar',
-            to: destinatario,
-            subject: asunto,
-            text: cuerpo
-        };
+exports.sendEmail = async() => {
+    var transporter = nodemailer.createTransport({
+        host: "mon15.servidoraweb.net",
+        port: 465,
+        auth: {
+            user: "transporter@tarjetaprimicia.com.ar",
+            pass: "zaZen_422Ddf",
+        },
+    });
 
-        // Enviar el correo electrónico
-        await transporter.sendMail(mailOptions);
-        console.log('Correo electrónico enviado');
-    } catch (error) {
-        console.error('Error al enviar el correo electrónico:', error);
-    }
-};
 
-module.exports = { enviarCorreo };
+    var mailOptions = {
+        from: "transporter@tarjetaprimicia.com.ar", // sender address
+        to: "casacentral@tarjetaprimicia.com.ar", // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello world?", // plain text body
+        html: "<b>Hello world?</b>", // html body
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error)
+        } else {
+            console.log("Email enviado", info)
+        }
+    })
+}

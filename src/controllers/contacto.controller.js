@@ -1,4 +1,5 @@
 const { pool } = require('./../db.js');
+const { sendEmail } = require('./correo.controller.js');
 
 exports.getContactos = async (req, res) => {
     try {
@@ -33,10 +34,12 @@ exports.createContacto = async (req, res) => {
     const date = new Date();
     try {
         const [rows] = await pool.query('INSERT INTO contactos ( motivo, nombre, email, mensaje, fecha ) VALUES (?, ?, ?, ?, ?)', [motivo, nombre, email, mensaje, date]);
+        sendEmail();
         res.send({
             id: rows.insertId,
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             message: 'Something goes wrong'
         });
