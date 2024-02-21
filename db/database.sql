@@ -54,12 +54,20 @@ CREATE TABLE IF NOT EXISTS tasas (
 );
 DESCRIBE tasas;
 
+CREATE TABLE IF NOT EXISTS comisiones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    comisionTitulo VARCHAR(100) NOT NULL,
+    comisionImporte TEXT NOT NULL,
+);
+DESCRIBE comisiones;
+
 CREATE TABLE IF NOT EXISTS filiales (
     id INT AUTO_INCREMENT PRIMARY KEY,
     localidad VARCHAR(100) NOT NULL,
     direccion VARCHAR(100) NOT NULL,
     email VARCHAR(80) NOT NULL,
-    telefono VARCHAR(60) NOT NULL
+    telefono VARCHAR(60) NOT NULL,
+    receptoria BOOLEAN NOT NULL DEFAULT FALSE
 );
 DESCRIBE filiales;
 
@@ -138,6 +146,16 @@ INSERT INTO categoria_comercio VALUES
 
 INSERT INTO comercios VALUES
     (1, 1, 'Olivera Viajes', 'Catamarca 72', 2, 1 )
+
+INSERT INTO comisiones VALUES
+    (1, 'COMISIÓN SERVICIO RENOVAC. TARJ. TITULAR', 'BONIFICADO' ),
+    (2, 'COMISIÓN SERVICIO RENOVAC. TARJ. ADICIONAL', 'BONIFICADO' ),
+    (3, 'COMISIÓN REPOSICION O REIMPRESIÓN TARJETA (extravío, robo, hurto, rotura)', '$ 2.400,00' ),
+    (4, 'CARGO SERVICIO ASISTENCIA MEDICA EN VIAJE', 'BONIFICADO' ),
+    (5, 'COMISIÓN MANTENIMIENTO DE CUENTA', '$ 950,00' ),
+    (6, 'COMISIÓN BENEFICIOS ESPECIALES', '$ 380,00' ),
+    (7, 'CARGO GESTION COBRANZA 1', '$ 600,00' ),
+    (8, 'CARGO GESTION COBRANZA 2', '$ 900,00' )
 
 
 
