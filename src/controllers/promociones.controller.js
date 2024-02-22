@@ -1,8 +1,22 @@
 const { pool } = require('./../db.js');
 
-exports.getPromociones = async (req, res) => {
+exports.getPromocionesConImagen = async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM promociones');
+        if (rows.length <= 0) return res.status(404).json({
+            message: 'Promociones not found'
+        });
+        res.json(rows);
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Something goes wrong'
+        });
+    }
+};
+
+exports.getPromociones = async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT id, fechaInicio, fechaFin, diasPromocion, promocion, texto, image FROM promociones');
         if (rows.length <= 0) return res.status(404).json({
             message: 'Promociones not found'
         });
