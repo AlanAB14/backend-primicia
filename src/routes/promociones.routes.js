@@ -1,10 +1,14 @@
 const { Router } = require('express');
 const { verificarToken } = require('../middleware/verificarToken.js');
-const { createPromocion, deletePromocion, getPromocion, getPromociones, updatePromocion } = require('../controllers/promociones.controller.js');
+const { createPromocion, deletePromocion, getPromocion, getPromociones, updatePromocion, getPromocionesConImagen } = require('../controllers/promociones.controller.js');
 
 const router = Router();
 
+// Promociones
 router.get('/promociones', getPromociones);
+
+// Promociones con imagen
+router.get('/promocionesConImagen', getPromocionesConImagen);
 
 router.get('/promociones/:id', getPromocion);
 
