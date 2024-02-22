@@ -1,23 +1,23 @@
 const nodemailer = require('nodemailer');
 
 
-exports.sendEmail = async() => {
+exports.sendEmail = async(motivo, nombre, email, mensaje) => {
     var transporter = nodemailer.createTransport({
-        host: "mon15.servidoraweb.net",
-        port: 465,
+        host: "smtp.tarjetaprimicia.com.ar",
+        secure: true,
+        port: 25,
         auth: {
-            user: "transporter@tarjetaprimicia.com.ar",
-            pass: "zaZen_422Ddf",
+            user: "prueba1@tarjetaprimicia.com.ar",
+            pass: "Primicia24*",
         },
     });
 
 
     var mailOptions = {
-        from: "transporter@tarjetaprimicia.com.ar", // sender address
-        to: "casacentral@tarjetaprimicia.com.ar", // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        from: "prueba1@tarjetaprimicia.com.ar", // sender address
+        subject: "Solicitud de contacto",
+        to: "abersia@cooperacionseguros.com.ar", // list of receivers
+        text: `El usuario ${nombre}, con mail ${email}, quiere comunicarse por el motivo ${motivo}, y escribio el siguiente mensaje: ${mensaje}. Puede verificarlo en el panel administrativo del sitio web`, // plain text body
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
