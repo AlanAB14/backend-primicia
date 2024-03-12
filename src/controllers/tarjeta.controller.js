@@ -1,4 +1,5 @@
 const { pool } = require('./../db.js');
+const { sendEmail } = require('./correo.controller.js');
 
 exports.getTarjetas = async (req, res) => {
     try {
@@ -33,6 +34,8 @@ exports.createTarjeta = async (req, res) => {
     const date = new Date();
     try {
         const [rows] = await pool.query('INSERT INTO tarjeta ( nombre, email, telefono, domicilio, ciudad, dni, ingresos, filial, mensaje, fecha ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [nombre, email, telefono, domicilio, ciudad, dni, ingresos, filial, mensaje, date]);
+        const camposTarjeta = { nombre, email, telefono, domicilio, ciudad, dni, ingresos, filial, mensaje }
+        sendEmail('Solicitud de tarjeta', camposTarjeta)
         res.send({
             id: rows.insertId,
         });

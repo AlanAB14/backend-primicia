@@ -83,7 +83,8 @@ CREATE TABLE IF NOT EXISTS promociones (
     fechaFin DATE NOT NULL,
     diasPromocion TEXT NOT NULL,
     promocion TEXT NOT NULL,
-    texto TEXT NULL
+    texto TEXT NULL,
+    image LONGTEXT NULL
 );
 DESCRIBE promociones;
 
