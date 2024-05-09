@@ -2,37 +2,40 @@ const nodemailer = require('nodemailer');
 
 
 exports.sendEmail = async(tipo, campos) => {
-    var email = '';
+    var email = [];
+    
     //console.log(removerAcentos(campos.filial))
 
     switch (removerAcentos(campos.filial)) {
         case 'rufino':
-            email = 'rufino@tarjetaprimicia.com.ar'
+            email.push('rufino@tarjetaprimicia.com.ar');
             break;
         case 'villa canas':
-            email = 'villacanas@tarjetaprimicia.com.ar'
+            email.push('villacanas@tarjetaprimicia.com.ar');
             break;
         case 'san gregorio':
-            email = 'sangregorio@tarjetaprimicia.com.ar'
+            email.push('sangregorio@tarjetaprimicia.com.ar');
             break;
         case 'san nicolas':
-            email = 'sannicolas@tarjetaprimicia.com.ar'
+            email.push('sannicolas@tarjetaprimicia.com.ar');
             break;
         case 'villa constitucion':
-            email = 'villaconstitucion@tarjetaprimicia.com.ar'
+            email.push('villaconstitucion@tarjetaprimicia.com.ar');
             break;
         case 'villa ramallo':
-            email = 'villaramallo@tarjetaprimicia.com.ar'
+            email.push('villaramallo@tarjetaprimicia.com.ar');
             break;
         case 'firmat':
-            email = 'firmat@tarjetaprimicia.com.ar'
+            email.push('firmat@tarjetaprimicia.com.ar');
+            break;
+        case 'venado tuerto':
+            email.push('venadotuerto@tarjetaprimicia.com.ar', 'casacentral@tarjetaprimicia.com.ar');
             break;
         default:
-            email = 'casacentral@tarjetaprimicia.com.ar'
+            email.push('venadotuerto@tarjetaprimicia.com.ar', 'casacentral@tarjetaprimicia.com.ar');
             break;
     }
     
-    //console.log(email)
 
     
     var transporter = nodemailer.createTransport({

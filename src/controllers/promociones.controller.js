@@ -63,6 +63,12 @@ exports.deletePromocion = async (req, res) => {
             message: 'Promocion not found'
         });
 
+        if (result.affectedRows >= 1) {
+            const result = await pool.query('UPDATE comercios SET promocionId = NULL WHERE promocionId = ?', [req.params.id]);
+            if (result.affectedRows === 0) return res.status(404).json({
+                message: 'Error al borrar promocionId en cascada'
+            });
+        }
         res.sendStatus(204);
     } catch (error) {
         return res.status(500).json({
