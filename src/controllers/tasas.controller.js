@@ -14,6 +14,20 @@ exports.getTasas = async (req, res) => {
     }
 };
 
+exports.getTasasFecha = async (req, res) => {
+    try {
+        const [rows] = await pool.query('SELECT * FROM tasas_fecha_actualizacion');
+        if (rows.length <= 0) return res.status(404).json({
+            message: 'Tasas not found'
+        });
+        res.json(rows);
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Something goes wrong'
+        });
+    }
+};
+
 exports.createTasa = async (req, res) => {
     const { tasaTitulo, tasaDescripcion, tna, tem, cft } = req.body;
     try {
@@ -53,6 +67,24 @@ exports.updateTasa = async (req, res) => {
         });
 
         const [rows] = await pool.query('SELECT * FROM tasas WHERE id = ?', [id]);
+
+        res.send(rows[0]);
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Something goes wrong'
+        });
+    }
+};
+
+exports.updateTasaFecha = async (req, res) => {
+    const { fecha_actualizacion } = req.body;
+    try {
+        const result = await pool.query('UPDATE tasas_fecha_actualizacion set fecha_actualizacion = IFNULL(?, fecha_actualizacion) WHERE id = ?', [fecha_actualizacion, 1]);
+        if (result.affectedRows === 0) return res.status(404).json({
+            message: 'Tasa not found'
+        });
+
+        const [rows] = await pool.query('SELECT * FROM tasas_fecha_actualizacion WHERE id = ?', [1]);
 
         res.send(rows[0]);
     } catch (error) {

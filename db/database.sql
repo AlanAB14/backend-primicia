@@ -54,12 +54,19 @@ CREATE TABLE IF NOT EXISTS tasas (
 );
 DESCRIBE tasas;
 
+CREATE TABLE IF NOT EXISTS tasas_fecha_actualizacion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_actualizacion DATE NOT NULL
+);
+DESCRIBE tasas_fecha_actualizacion;
+
 CREATE TABLE IF NOT EXISTS comisiones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     comisionTitulo VARCHAR(100) NOT NULL,
     comisionImporte TEXT NOT NULL,
 );
 DESCRIBE comisiones;
+
 
 CREATE TABLE IF NOT EXISTS filiales (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -117,6 +124,8 @@ INSERT INTO tasas VALUES
     (2, 'TASA DE INTERES – PUNITORIOS', 'Comienza a aplicarse en la fecha de vencimiento del resumen, en el caso de no haber abonado el pago mínimo.', 64.10, 5.27, 119.16 ),
     (3, 'TASA DE INTERES – ADELANTOS EN EFECTIVO', 'Comienza a aplicarse desde la fecha en la que se realiza el adelanto en efectivo', 128.20, 10.54, 238.32 )
 
+INSERT INTO tasas VALUES
+(1, CURRENT_DATE)
 
 INSERT INTO filiales VALUES
     (1, 'Venado Tuerto', 'Mitre 664', 'venadotuerto@tarjetaprimicia.com.ar', '03462 430655'),
@@ -159,6 +168,19 @@ INSERT INTO comisiones VALUES
     (8, 'CARGO GESTION COBRANZA 2', '$ 900,00' )
 
 
+DELIMITER //
+
+CREATE TRIGGER update_fecha_tasa
+AFTER UPDATE ON tasas
+FOR EACH ROW
+BEGIN
+    UPDATE tasas_fecha_actualizacion 
+    SET fecha_actualizacion = CURRENT_DATE
+    WHERE id = 1;
+END;
+//
+
+DELIMITER ;
 
 --  *** COMENTARIOS **
 -- Limitar input mensaje con max 250 caracteres
