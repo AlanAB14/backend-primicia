@@ -14,6 +14,7 @@ const filialRoutes = require('./routes/filiales.routes.js');
 const categoriaComercioRoutes = require('./routes/categoriaComercio.routes.js');
 const promocionRoutes = require('./routes/promociones.routes.js');
 const comercioRoutes = require('./routes/comercios.routes.js');
+const costoFinancieroRoutes = require('./routes/costoFinanciero.routes.js');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api', filialRoutes);
 app.use('/api', categoriaComercioRoutes);
 app.use('/api', promocionRoutes);
 app.use('/api', comercioRoutes);
+app.use('/api', costoFinancieroRoutes);
 
 app.use((req, res, next) => {
     res.status(404).json({

@@ -16,7 +16,7 @@ exports.getPromocionesConImagen = async (req, res) => {
 
 exports.getPromociones = async (req, res) => {
     try {
-        const [rows] = await pool.query('SELECT id, fechaInicio, fechaFin, diasPromocion, promocion, texto, image FROM promociones');
+        const [rows] = await pool.query('SELECT id, fechaInicio, fechaFin, diasPromocion, promocion, texto, image, tieneContador FROM promociones');
         if (rows.length <= 0) return res.status(404).json({
             message: 'Promociones not found'
         });
@@ -43,9 +43,9 @@ exports.getPromocion = async (req, res) => {
 };
 
 exports.createPromocion = async (req, res) => {
-    const { fechaInicio, fechaFin, diasPromocion, promocion, texto } = req.body;
+    const { fechaInicio, fechaFin, diasPromocion, promocion, texto, image, tieneContador } = req.body;
     try {
-        const [rows] = await pool.query('INSERT INTO promociones ( fechaInicio, fechaFin, diasPromocion, promocion, texto, image ) VALUES (?, ?, ?, ?, ?, ?)', [fechaInicio, fechaFin, diasPromocion, promocion, texto, image]);
+        const [rows] = await pool.query('INSERT INTO promociones ( fechaInicio, fechaFin, diasPromocion, promocion, texto, image, tieneContador ) VALUES (?, ?, ?, ?, ?, ?, ?)', [fechaInicio, fechaFin, diasPromocion, promocion, texto, image, tieneContador]);
         res.send({
             id: rows.insertId,
         });
@@ -79,9 +79,9 @@ exports.deletePromocion = async (req, res) => {
 
 exports.updatePromocion = async (req, res) => {
     const { id } = req.params;
-    const { fechaInicio, fechaFin, diasPromocion, promocion, texto, image } = req.body;
+    const { fechaInicio, fechaFin, diasPromocion, promocion, texto, image, tieneContador } = req.body;
     try {
-        const result = await pool.query('UPDATE promociones set fechaInicio = IFNULL(?, fechaInicio), fechaFin = IFNULL(?, fechaFin), diasPromocion = IFNULL(?, diasPromocion), promocion = IFNULL(?, promocion), texto = IFNULL(?, texto), image = IFNULL(?, image)  WHERE id = ?', [fechaInicio, fechaFin, diasPromocion, promocion, texto, image, id]);
+        const result = await pool.query('UPDATE promociones set fechaInicio = IFNULL(?, fechaInicio), fechaFin = IFNULL(?, fechaFin), diasPromocion = IFNULL(?, diasPromocion), promocion = IFNULL(?, promocion), texto = IFNULL(?, texto), image = IFNULL(?, image), tieneContador = IFNULL(?, tieneContador) WHERE id = ?', [fechaInicio, fechaFin, diasPromocion, promocion, texto, image, tieneContador, id]);
         if (result.affectedRows === 0) return res.status(404).json({
             message: 'Filial not found'
         });

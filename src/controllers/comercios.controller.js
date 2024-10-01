@@ -52,10 +52,10 @@ exports.getComerciosPorFilialCategoriaPromocion = async (req, res) => {
         }
 
         if (promocion && promocion !== '' && promocion !== 'Todas' && promocion !== 'no') {
-            sqlQuery += sqlQuery.includes('WHERE') ? ' AND promocionId = ?' : ' WHERE promocionId = ?';
+            sqlQuery += sqlQuery.includes('WHERE') ? ' AND JSON_CONTAINS(promocionesId, ?)' : ' WHERE JSON_CONTAINS(promocionesId, ?)';
             sqlParams.push(promocion);
         } else if (promocion === 'no') {
-            sqlQuery += sqlQuery.includes('WHERE') ? ' AND promocionId IS NULL' : ' WHERE promocionId IS NULL';
+            sqlQuery += sqlQuery.includes('WHERE') ? ' AND (promocionesId IS NULL OR JSON_CONTAINS(promocionesId, "null"))' : ' WHERE (promocionesId IS NULL OR JSON_CONTAINS(promocionesId, "null"))';
         }
 
         const [rows] = await pool.query(sqlQuery, sqlParams);
@@ -132,9 +132,9 @@ exports.getComerciosPorPromocion = async (req, res) => {
 };
 
 exports.createComercio = async (req, res) => {
-    const { categoriaId, nombre, direccion, filialId, promocionId } = req.body;
+    const { categoriaId, nombre, direccion, filialId, promocionesId } = req.body;
     try {
-        const [rows] = await pool.query('INSERT INTO comercios ( categoriaId, nombre, direccion, filialId, promocionId ) VALUES (?, ?, ?, ?, ?)', [categoriaId, nombre, direccion, filialId, promocionId]);
+        const [rows] = await pool.query('INSERT INTO comercios ( categoriaId, nombre, direccion, filialId, promocionesId ) VALUES (?, ?, ?, ?, ?)', [categoriaId, nombre, direccion, filialId, JSON.stringify(promocionesId)]);
         res.send({
             id: rows.insertId,
         });
@@ -163,13 +163,13 @@ exports.deleteComercio = async (req, res) => {
 
 exports.updateComercio = async (req, res) => {
     const { id } = req.params;
-    const { categoriaId, nombre, direccion, filialId, promocionId } = req.body;
+    const { categoriaId, nombre, direccion, filialId, promocionesId } = req.body;
     
     try {
         let query;
         let values;
 
-        if (promocionId === 0) {
+        if (promocionesId === 0) {
             // Si promocionId es 0, elimina el campo promocionId de la base de datos
             query = `
                 UPDATE comercios
@@ -178,7 +178,7 @@ exports.updateComercio = async (req, res) => {
                     nombre = IFNULL(?, nombre),
                     direccion = IFNULL(?, direccion),
                     filialId = IFNULL(?, filialId),
-                    promocionId = NULL
+                    promocionesId = NULL
                 WHERE id = ?
             `;
             values = [categoriaId, nombre, direccion, filialId, id];
@@ -191,10 +191,10 @@ exports.updateComercio = async (req, res) => {
                     nombre = IFNULL(?, nombre),
                     direccion = IFNULL(?, direccion),
                     filialId = IFNULL(?, filialId),
-                    promocionId = IFNULL(?, promocionId)
+                    promocionesId = IFNULL(?, promocionesId)
                 WHERE id = ?
             `;
-            values = [categoriaId, nombre, direccion, filialId, promocionId, id];
+            values = [categoriaId, nombre, direccion, filialId, JSON.stringify(promocionesId), id];
         }
 
         const result = await pool.query(query, values);

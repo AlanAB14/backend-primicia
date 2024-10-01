@@ -110,6 +110,12 @@ CREATE TABLE IF NOT EXISTS comercios (
 DESCRIBE comercios;
 
 
+CREATE TABLE IF NOT EXISTS costo_financiero (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    percentage DECIMAL (10, 2) NOT NULL
+);
+DESCRIBE costo_financiero;
+
 
 INSERT INTO preguntas VALUES
     (1, '¿Qué tipo de estructura jurídica tiene Primicia?', 'Ualá es una empresa constituida de acuerdo a la legislación de la República Argentina como una Sociedad Anónima Unipersonal (SAU). Está inscripta en el Registro Público de Comercio de la Ciudad Autónoma de Buenos Aires y cumple con todas las obligaciones impuestas por Ley para funcionar como tal.'),
