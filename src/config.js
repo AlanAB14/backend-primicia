@@ -6,7 +6,7 @@ module.exports.PORT = 3000;
 module.exports.DB_USER = 'root';
 module.exports.DB_PASSWORD = '';
 module.exports.DB_HOST = 'localhost';
-module.exports.DB_DATABASE = 'primicia';
+module.exports.DB_DATABASE = 'nfdzgkds_primicia';
 module.exports.DB_PORT = 3306;
 
 // module.exports.PORT = 3000;

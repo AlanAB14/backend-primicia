@@ -29,8 +29,8 @@ exports.getComercio = async (req, res) => {
 };
 
 exports.getComerciosPorFilialCategoriaPromocion = async (req, res) => {
-    const { localidad, categoria, promocion } = req.body;
-    console.log(localidad)
+    const { localidad, categoria, promocion, promocionEspecial } = req.body;
+    
     try {
         let sqlQuery = 'SELECT * FROM comercios';
         const sqlParams = [];
@@ -56,6 +56,13 @@ exports.getComerciosPorFilialCategoriaPromocion = async (req, res) => {
             sqlParams.push(promocion);
         } else if (promocion === 'no') {
             sqlQuery += sqlQuery.includes('WHERE') ? ' AND (promocionesId IS NULL OR JSON_CONTAINS(promocionesId, "null"))' : ' WHERE (promocionesId IS NULL OR JSON_CONTAINS(promocionesId, "null"))';
+        }
+
+        if (promocionEspecial && promocionEspecial !== '' && promocionEspecial !== 'Todas' && promocionEspecial !== 'no') {
+            sqlQuery += sqlQuery.includes('WHERE') ? ' AND JSON_CONTAINS(promocionesEspecialesId, ?)' : ' WHERE JSON_CONTAINS(promocionesEspecialesId, ?)';
+            sqlParams.push(promocionEspecial);
+        } else if (promocionEspecial === 'no') {
+            sqlQuery += sqlQuery.includes('WHERE') ? ' AND (promocionesEspecialesId IS NULL OR JSON_CONTAINS(promocionesEspecialesId, "null"))' : ' WHERE (promocionesEspecialesId IS NULL OR JSON_CONTAINS(promocionesEspecialesId, "null"))';
         }
 
         const [rows] = await pool.query(sqlQuery, sqlParams);
@@ -131,10 +138,24 @@ exports.getComerciosPorPromocion = async (req, res) => {
     }
 };
 
-exports.createComercio = async (req, res) => {
-    const { categoriaId, nombre, direccion, filialId, promocionesId } = req.body;
+exports.getComerciosPorPromocionEspecial = async (req, res) => {
     try {
-        const [rows] = await pool.query('INSERT INTO comercios ( categoriaId, nombre, direccion, filialId, promocionesId ) VALUES (?, ?, ?, ?, ?)', [categoriaId, nombre, direccion, filialId, JSON.stringify(promocionesId)]);
+        const [rows] = await pool.query('SELECT * FROM comercios WHERE promocionesEspecialesId = ?', [req.params.id]);
+        if (rows.length <= 0) return res.status(404).json({
+            message: 'Comercios not found'
+        });
+        res.json(rows);
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Something goes wrong'
+        });
+    }
+};
+
+exports.createComercio = async (req, res) => {
+    const { categoriaId, nombre, direccion, filialId, promocionesId, promocionesEspecialesId } = req.body;
+    try {
+        const [rows] = await pool.query('INSERT INTO comercios ( categoriaId, nombre, direccion, filialId, promocionesId, promocionesEspecialesId ) VALUES (?, ?, ?, ?, ?, ?)', [categoriaId, nombre, direccion, filialId, JSON.stringify(promocionesId), JSON.stringify(promocionesEspecialesId)]);
         res.send({
             id: rows.insertId,
         });
@@ -163,14 +184,14 @@ exports.deleteComercio = async (req, res) => {
 
 exports.updateComercio = async (req, res) => {
     const { id } = req.params;
-    const { categoriaId, nombre, direccion, filialId, promocionesId } = req.body;
+    const { categoriaId, nombre, direccion, filialId, promocionesId, promocionesEspecialesId } = req.body;
     
     try {
         let query;
         let values;
 
-        if (promocionesId === 0) {
-            // Si promocionId es 0, elimina el campo promocionId de la base de datos
+        if (promocionesId === 0 && promocionesEspecialesId === 0) {
+            // Si promocionId es 0 y promocionesEspecialesId, elimina los campo promocionId y promocionesEspecialesId de la base de datos
             query = `
                 UPDATE comercios
                 SET
@@ -178,10 +199,39 @@ exports.updateComercio = async (req, res) => {
                     nombre = IFNULL(?, nombre),
                     direccion = IFNULL(?, direccion),
                     filialId = IFNULL(?, filialId),
-                    promocionesId = NULL
+                    promocionesId = NULL,
+                    promocionesEspecialesId = NULL
                 WHERE id = ?
             `;
             values = [categoriaId, nombre, direccion, filialId, id];
+        }else if(promocionesId === 0){
+            // Si promocionId es 0, elimina campo promocionId
+            query = `
+                UPDATE comercios
+                SET
+                    categoriaId = IFNULL(?, categoriaId),
+                    nombre = IFNULL(?, nombre),
+                    direccion = IFNULL(?, direccion),
+                    filialId = IFNULL(?, filialId),
+                    promocionesEspecialesId = IFNULL(?, promocionesEspecialesId),
+                    promocionesId = NULL
+                WHERE id = ?
+            `;
+            values = [categoriaId, nombre, direccion, filialId, JSON.stringify(promocionesEspecialesId), id];
+        }else if (promocionesEspecialesId === 0){
+            // Si promocionesId no es 0, actualiza normalmente
+            query = `
+                UPDATE comercios
+                SET
+                    categoriaId = IFNULL(?, categoriaId),
+                    nombre = IFNULL(?, nombre),
+                    direccion = IFNULL(?, direccion),
+                    filialId = IFNULL(?, filialId),
+                    promocionesId = IFNULL(?, promocionesId),
+                    promocionesEspecialesId = NULL
+                WHERE id = ?
+            `;
+            values = [categoriaId, nombre, direccion, filialId, JSON.stringify(promocionesId), id];
         } else {
             // Si promocionId no es 0, actualiza normalmente
             query = `
@@ -191,10 +241,11 @@ exports.updateComercio = async (req, res) => {
                     nombre = IFNULL(?, nombre),
                     direccion = IFNULL(?, direccion),
                     filialId = IFNULL(?, filialId),
-                    promocionesId = IFNULL(?, promocionesId)
+                    promocionesId = IFNULL(?, promocionesId),
+                    promocionesEspecialesId = IFNULL(?, promocionesEspecialesId)
                 WHERE id = ?
             `;
-            values = [categoriaId, nombre, direccion, filialId, JSON.stringify(promocionesId), id];
+            values = [categoriaId, nombre, direccion, filialId, JSON.stringify(promocionesId), JSON.stringify(promocionesEspecialesId), id];
         }
 
         const result = await pool.query(query, values);

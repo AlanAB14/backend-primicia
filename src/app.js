@@ -13,6 +13,8 @@ const tasaRoutes = require('./routes/tasas.routes.js');
 const filialRoutes = require('./routes/filiales.routes.js');
 const categoriaComercioRoutes = require('./routes/categoriaComercio.routes.js');
 const promocionRoutes = require('./routes/promociones.routes.js');
+const promocionesEspecialesRoutes = require('./routes/promocionesEspeciales.routes.js');
+const habilitarFuncionesRoutes = require('./routes/habilitarFuncion.routes.js');
 const comercioRoutes = require('./routes/comercios.routes.js');
 const costoFinancieroRoutes = require('./routes/costoFinanciero.routes.js');
 
@@ -32,6 +34,8 @@ app.use('/api', tasaRoutes);
 app.use('/api', filialRoutes);
 app.use('/api', categoriaComercioRoutes);
 app.use('/api', promocionRoutes);
+app.use('/api', promocionesEspecialesRoutes);
+app.use('/api', habilitarFuncionesRoutes);
 app.use('/api', comercioRoutes);
 app.use('/api', costoFinancieroRoutes);
 

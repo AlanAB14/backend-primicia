@@ -103,18 +103,48 @@ CREATE TABLE IF NOT EXISTS comercios (
     direccion VARCHAR(140) NOT NULL,
     filialId INT NOT NULL,
     promocionId INT NOT NULL,
+    promocionEspecialId INT NULL,
     FOREIGN KEY (categoriaId) REFERENCES categoria_comercio(id),
     FOREIGN KEY (filialId) REFERENCES filiales(id),
     FOREIGN KEY (promocionId) REFERENCES promociones(id)
+    FOREIGN KEY (promocionEspecialId) REFERENCES promociones_especiales(id)
 );
 DESCRIBE comercios;
 
 
 CREATE TABLE IF NOT EXISTS costo_financiero (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    percentage DECIMAL (10, 2) NOT NULL
+    percentage DECIMAL (10, 2) NOT NULL,
 );
 DESCRIBE costo_financiero;
+
+CREATE TABLE IF NOT EXISTS habilitar_funcion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(120) NOT NULL,
+    activated BOOLEAN DEFAULT FALSE
+
+);
+
+DESCRIBE habilitar_funcion;
+
+CREATE TABLE IF NOT EXISTS promociones_especiales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fechaInicio DATE NOT NULL,
+    fechaFin DATE NOT NULL,
+    diasPromocion TEXT NOT NULL,
+    promocion TEXT NOT NULL,
+    texto TEXT NULL,
+    image LONGTEXT NULL,
+    tieneContador BOOLEAN NOT NULL DEFAULT true
+);
+DESCRIBE promociones_especiales;
+
+ALTER TABLE comercios
+ADD COLUMN promocionesEspecialesId LONGTEXT;
+
+INSERT INTO habilitar_funcion VALUES
+(1, 'promociones_especiales', true);
+
 
 
 INSERT INTO preguntas VALUES
